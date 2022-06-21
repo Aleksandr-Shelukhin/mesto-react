@@ -1,40 +1,21 @@
-import Popup from './Popup.js';
+import React from 'react';
 
-export default class PopupWithForm extends Popup {
+const PopupWithForm = ({name, title, textButton, isOpen, onClick, onClose, onCloseEsc, ...props}) => {
+  return (
+      <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`} id="profilePopup">
+          <div className="popup__container popup__container_includes_form">
+              <h3 className="popup__name">{title}</h3>
+              <form className="popup__form popup__form_type_profile" name={name} noValidate>
 
-  constructor(popupSelector, { formSubmitter }) {
-    super(popupSelector);
-    this._formSubmitter = formSubmitter;
-    this._formElement = this._popupElement.querySelector('.popup__form');
-    this._inputList = this._formElement.querySelectorAll('.popup__form-input');
-  }
+                  {props.children}
 
-  _getInputValues() {
-    const data = {};
-    this._inputList.forEach((input) => {
-      data[input.name] = input.value
-    });
-    return data;
-  }
+                  <button type="submit" className="popup__form-button transition-on-hover">{textButton}</button>
 
-  setEventListeners() {
-    super.setEventListeners();
-    this._formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      this._formSubmitter(this._getInputValues());
-    })
-  }
+              </form>
+              <button onClick={onClose} type="button" className="popup__close-button transition-on-hover" id="profilePopupCloseButton"></button>
+          </div>
+      </div>
+  );
+};
 
-  close() {
-    super.close();
-    this._formElement.reset();
-  }
-
-  showLoadingProcess(isLoading) {
-    if (isLoading) {
-      this._formElement.querySelector('.popup__form-button').textContent = "Сохранение...";
-    } else {
-      this._formElement.querySelector('.popup__form-button').textContent = "Сохранить";
-    }
-  }
-}
+export default PopupWithForm;
