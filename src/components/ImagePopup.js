@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ImagePopup = ({card, onClose, isOpen}) => {
-    console.log(card)
     return (
         <div className={`popup popup_type_image ${isOpen && 'popup_opened'}`} id="galleryPopup">
             <div className="popup__image-wrapper">
