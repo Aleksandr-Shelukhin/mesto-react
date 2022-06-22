@@ -38,7 +38,6 @@ $ npm run build
 ```
 * Готовый проект будет в папке `build`. Достаточно запустить файл `index.html`
 
-
 #### 🔧 Технологии
 ![JavaScript](https://img.shields.io/badge/-JavaScript-05122A?style=flat&logo=javascript)&nbsp;
 ![React](https://img.shields.io/badge/-React-05122A?style=flat&logo=react)&nbsp;
@@ -49,6 +48,5 @@ $ npm run build
 ![OOP](https://img.shields.io/badge/-ООП-05122A?style=flat&logo=StackShare&logoColor=green)\
 ![Webpack](https://img.shields.io/badge/-Webpack-05122A?style=flat&logo=Webpack)&nbsp;
 ![Figma](https://img.shields.io/badge/-Figma-05122A?style=flat&logo=Figma)&nbsp;
-
 
 **Автор проекта:**  Александр Шелухин
