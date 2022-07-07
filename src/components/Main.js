@@ -1,29 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {api} from "../utils/Api";
 import Card from "./Card";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-
   const [cards, setCards] = useState([]);
 
+  const currentUser = useContext(CurrentUserContext)
+
   useEffect(() => {
-    api.getNeededData()
+    api.renderCards()
       .then((res) => {
-        const[userInfo, cards] = res;
-
-        setUserName(userInfo.name);
-        setUserDescription(userInfo.about);
-        setUserAvatar(userInfo.avatar);
-
-        setCards(cards);
+        setCards(res);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [])
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    });
+  }
 
   return (
     <main className="content">
@@ -31,12 +35,12 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
         <section className="profile">
           <div onClick={onEditAvatar} className="profile__avatar-wrapper">
             <div className="profile__avatar-edit-icon"></div>
-            <img className="profile__avatar" src={userAvatar} alt="Аватарка пользователя"/>
+            <img className="profile__avatar" src={currentUser.avatar} alt="Аватарка пользователя"/>
           </div>
           <div className="profile__info-wrapper">
             <div className="profile__info">
-              <h1 className="profile__title">{userName}</h1>
-              <p className="profile__subtitle">{userDescription}</p>
+              <h1 className="profile__title">{currentUser.name}</h1>
+              <p className="profile__subtitle">{currentUser.about}</p>
             </div>
             <button onClick={onEditProfile} className="profile__edit-button transition-on-hover" type="button"></button>
           </div>
@@ -47,7 +51,7 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
           <ul className="elements__list">
             {
               cards.map((cardItem) => (
-                <Card card={cardItem} key={cardItem._id} onCardClick={onCardClick}/>
+                <Card card={cardItem} key={cardItem._id} onCardClick={onCardClick} onCardLike={handleCardLike}/>
               ))
             }
 

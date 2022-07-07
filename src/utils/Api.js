@@ -94,6 +94,18 @@ class Api {
     });
   }
 
+  changeLikeCardStatus(cardId, isLiked) { // переключатель лайков
+  return fetch(
+    `${this._dataBaseLink}/cards/${cardId}/likes`,
+    {
+      method: `${isLiked ? "PUT" : "DELETE"}`,
+      headers: this._headers,
+    }
+  ).then((res) => {
+    return this._getServerResponse(res);
+  });
+}
+
   replaceAvatar(newAvatar) { // меняем картинку аватара
     return fetch(
       `${this._dataBaseLink}/users/me/avatar`,
