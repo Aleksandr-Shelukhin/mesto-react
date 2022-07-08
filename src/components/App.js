@@ -9,6 +9,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./addPlacePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -18,7 +19,6 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
-
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -43,6 +43,7 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    console.log(card)
     api.deleteCard(card)
       .then(() => {
         setCards((state) => state.filter((c) => !(c._id === card._id)));
@@ -115,6 +116,17 @@ function App() {
         console.log(err);
       })
   }
+  
+  function handleAddPlaceSubmit(newCardInfo) {
+    api.addNewCard(newCardInfo)
+      .then((card) => {
+        setCards([card, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   return (
     <div className="page">
@@ -140,24 +152,11 @@ function App() {
         />
 
         {/*Попап добавление нового места*/}
-        <PopupWithForm
-          title={'Новое место'}
-          name={'cards'}
-          textButton={'Добавить'}
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}>
-          <label className="popup__form-field" htmlFor="place-input">
-            <input id="place-input" type="text" name="place" placeholder="Название" minLength="2" maxLength="30"
-                   required className="popup__form-input"/>
-            <span className="place-input-error popup__form-input-error"></span>
-          </label>
-
-          <label className="popup__form-field" htmlFor="link-input">
-            <input id="link-input" type="url" name="link" placeholder="Ссылка на картинку" required
-                   className="popup__form-input"/>
-            <span className="link-input-error popup__form-input-error"></span>
-          </label>
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
         {/*Попап обновления аватара*/}
         <EditAvatarPopup

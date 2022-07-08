@@ -25,7 +25,7 @@ class Api {
   }
 
   deleteCard(card) { // удаляем карточку с сервера
-    return fetch(`${this._dataBaseLink}/cards/${card._Id}`,
+    return fetch(`${this._dataBaseLink}/cards/${card._id}`,
       {
         method: "DELETE",
         headers: this._headers,
