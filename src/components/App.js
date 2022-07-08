@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -17,6 +18,40 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.renderCards()
+      .then((res) => {
+        setCards(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [])
+
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли уже лайк на этой карточке
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card)
+      .then(() => {
+        setCards((state) => state.filter((c) => !(c._id === card._id)));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
 
   useEffect(() => {
     api.getUserInfo()
@@ -59,8 +94,19 @@ function App() {
   }
 
   function handleUpdateUser(newInfo) {
-    console.log(newInfo)
     api.addUserInfo(newInfo)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  function handleUpdateAvatar(newAvatar) {
+    console.log(newAvatar)
+    api.replaceAvatar(newAvatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -80,6 +126,9 @@ function App() {
           onAddPlace={handleAddPlacePopupOpen}
           onConfirmDelete={handleDeleteConfirmPopupOpen}
           onCardClick={handleCardClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer/>
 
@@ -111,18 +160,11 @@ function App() {
         </PopupWithForm>
 
         {/*Попап обновления аватара*/}
-        <PopupWithForm
-          title={'Обновить аватар'}
-          name={'avatar'}
-          textButton={'Обновить'}
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}>
-          <label className="popup__form-field" htmlFor="avatar-link-input">
-            <input id="avatar-link-input" type="url" name="avatar-link" placeholder="Ссылка на аватар" required
-                   className="popup__form-input"/>
-            <span className="avatar-link-input-error popup__form-input-error"></span>
-          </label>
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         {/*Попап подтверждения удаления*/}
         <PopupWithForm
