@@ -7,6 +7,7 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -57,6 +58,10 @@ function App() {
     setSelectedCard({});
   }
 
+  function handleUpdateUser() {
+
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
@@ -71,24 +76,18 @@ function App() {
         <Footer/>
 
         {/*Попап редактирования профиля*/}
-        <PopupWithForm title={'Редактировать профиль'} name={'profile'} textButton={'Сохранить'}
-                       isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-          <label className="popup__form-field" htmlFor="name-input">
-            <input id="name-input" type="text" name="name" placeholder="Имя" minLength="2" maxLength="40" required
-                   className="popup__form-input"/>
-            <span className="name-input-error popup__form-input-error"></span>
-          </label>
-
-          <label className="popup__form-field" htmlFor="job-input">
-            <input id="job-input" type="text" name="job" placeholder="Род деятельности" minLength="2" maxLength="200"
-                   required className="popup__form-input"/>
-            <span className="job-input-error popup__form-input-error"></span>
-          </label>
-        </PopupWithForm>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+        />
 
         {/*Попап добавление нового места*/}
-        <PopupWithForm title={'Новое место'} name={'cards'} textButton={'Добавить'} isOpen={isAddPlacePopupOpen}
-                       onClose={closeAllPopups}>
+        <PopupWithForm
+          title={'Новое место'}
+          name={'cards'}
+          textButton={'Добавить'}
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}>
           <label className="popup__form-field" htmlFor="place-input">
             <input id="place-input" type="text" name="place" placeholder="Название" minLength="2" maxLength="30"
                    required className="popup__form-input"/>
@@ -103,8 +102,12 @@ function App() {
         </PopupWithForm>
 
         {/*Попап обновления аватара*/}
-        <PopupWithForm title={'Обновить аватар'} name={'avatar'} textButton={'Обновить'} isOpen={isEditAvatarPopupOpen}
-                       onClose={closeAllPopups}>
+        <PopupWithForm
+          title={'Обновить аватар'}
+          name={'avatar'}
+          textButton={'Обновить'}
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}>
           <label className="popup__form-field" htmlFor="avatar-link-input">
             <input id="avatar-link-input" type="url" name="avatar-link" placeholder="Ссылка на аватар" required
                    className="popup__form-input"/>
@@ -113,12 +116,19 @@ function App() {
         </PopupWithForm>
 
         {/*Попап подтверждения удаления*/}
-        <PopupWithForm title={'Вы уверены?'} name={'confirm'} textButton={'Да'} isOpen={isDeleteConfirmPopupOpen}
-                       onClose={closeAllPopups}>
-
+        <PopupWithForm
+          title={'Вы уверены?'}
+          name={'confirm'}
+          textButton={'Да'}
+          isOpen={isDeleteConfirmPopupOpen}
+          onClose={closeAllPopups}>
         </PopupWithForm>
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen}/>
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          isOpen={isImagePopupOpen}
+        />
       </CurrentUserContext.Provider>
     </div>
   );

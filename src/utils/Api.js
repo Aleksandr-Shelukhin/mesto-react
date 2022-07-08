@@ -24,14 +24,14 @@ class Api {
     });
   }
 
-  deleteCard(cardId, cardElement) { // удаляем карточку с сервера
-    return fetch(`${this._dataBaseLink}/cards/${cardId}`,
+  deleteCard(card) { // удаляем карточку с сервера
+    return fetch(`${this._dataBaseLink}/cards/${card._Id}`,
       {
         method: "DELETE",
         headers: this._headers,
       }
     ).then((res) => {
-      return this._getServerResponse(res, cardElement);
+      return this._getServerResponse(res);
     });
   }
 

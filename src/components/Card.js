@@ -27,6 +27,11 @@ const Card = (props) => {
   function handleLikeClick() {
     props.onCardLike(props.card);
   }
+
+  function handleDeleteClick() {
+    props.onCardDelete(props.card)
+  }
+
   return (
 
     <li className="element">
@@ -41,8 +46,10 @@ const Card = (props) => {
           <span className="element__like-counter">{props.card.likes.length}</span>
         </div>
       </div>
-      <button className={`element__button ${cardDeleteButtonClassName} transition-on-hover`}
-              type="button"></button>
+      <button
+        onClick={handleDeleteClick}
+        className={`element__button ${cardDeleteButtonClassName} transition-on-hover`}
+        type="button"></button>
     </li>
 
   );

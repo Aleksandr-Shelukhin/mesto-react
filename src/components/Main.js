@@ -29,29 +29,58 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) => {
     });
   }
 
+  function handleCardDelete(card) {
+    api.deleteCard(card)
+      .then(() => {
+        setCards((state) => state.filter((c) => !(c._id === card._id)));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   return (
     <main className="content">
       <div className="container">
         <section className="profile">
-          <div onClick={onEditAvatar} className="profile__avatar-wrapper">
+          <div
+            onClick={onEditAvatar}
+            className="profile__avatar-wrapper">
             <div className="profile__avatar-edit-icon"></div>
-            <img className="profile__avatar" src={currentUser.avatar} alt="Аватарка пользователя"/>
+            <img
+              className="profile__avatar"
+              src={currentUser.avatar}
+              alt="Аватарка пользователя"/>
           </div>
           <div className="profile__info-wrapper">
             <div className="profile__info">
               <h1 className="profile__title">{currentUser.name}</h1>
               <p className="profile__subtitle">{currentUser.about}</p>
             </div>
-            <button onClick={onEditProfile} className="profile__edit-button transition-on-hover" type="button"></button>
+            <button
+              onClick={onEditProfile}
+              className="profile__edit-button transition-on-hover"
+              type="button">
+            </button>
           </div>
-          <button onClick={onAddPlace} className="profile__add-button transition-on-hover" type="button"></button>
+          <button
+            onClick={onAddPlace}
+            className="profile__add-button transition-on-hover"
+            type="button">
+          </button>
         </section>
 
         <section className="elements">
           <ul className="elements__list">
             {
               cards.map((cardItem) => (
-                <Card card={cardItem} key={cardItem._id} onCardClick={onCardClick} onCardLike={handleCardLike}/>
+                <Card
+                  card={cardItem}
+                  key={cardItem._id}
+                  onCardClick={onCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
               ))
             }
 
