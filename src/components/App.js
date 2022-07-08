@@ -58,8 +58,16 @@ function App() {
     setSelectedCard({});
   }
 
-  function handleUpdateUser() {
-
+  function handleUpdateUser(newInfo) {
+    console.log(newInfo)
+    api.addUserInfo(newInfo)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return (
@@ -79,6 +87,7 @@ function App() {
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
         />
 
         {/*Попап добавление нового места*/}
