@@ -6,8 +6,6 @@ const Main = ({onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCa
 
   const currentUser = useContext(CurrentUserContext)
 
-
-
   return (
     <main className="content">
       <div className="container">

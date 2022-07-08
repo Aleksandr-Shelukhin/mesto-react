@@ -8,7 +8,6 @@ const PopupWithForm = ({name, title, textButton, isOpen, onClick, onClose, onClo
         <form
           className="popup__form popup__form_type_profile"
           name={name}
-          noValidate
           onSubmit={onSubmit}
         >
 
