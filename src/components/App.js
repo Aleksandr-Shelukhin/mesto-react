@@ -43,7 +43,6 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    console.log(card)
     api.deleteCard(card)
       .then(() => {
         setCards((state) => state.filter((c) => !(c._id === card._id)));
@@ -106,7 +105,6 @@ function App() {
   }
 
   function handleUpdateAvatar(newAvatar) {
-    console.log(newAvatar)
     api.replaceAvatar(newAvatar)
       .then((res) => {
         setCurrentUser(res);
